@@ -121,6 +121,7 @@ class _AudioImage extends StatelessWidget {
           return QueryArtworkWidget(
             id: int.tryParse(snapshot.data?.id ?? '') ?? 0,
             type: ArtworkType.AUDIO,
+            artworkHeight: 320,
             artworkBorder: BorderRadius.circular(10),
             nullArtworkWidget: Container(
               height: 320,

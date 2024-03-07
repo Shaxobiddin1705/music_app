@@ -74,13 +74,28 @@ class _ErrorView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
+    return SliverFillRemaining(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Center(
-          child: Text(
-            error,
-            style: TextStyleX.styleF16W500.copyWith(color: Colors.red),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Text(
+                "Something went wrong\nBut You can listen local musics",
+                style: TextStyleX.styleF18W700.copyWith(color: Colors.red),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: () {
+                  NavigationUtils.getMainNavigator()
+                      .navigateLocalTracks(context);
+                },
+                child: const Text('Local musics'),
+              )
+            ],
           ),
         ),
       ),
