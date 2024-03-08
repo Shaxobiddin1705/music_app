@@ -46,11 +46,10 @@ class _PlayButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<ButtonState>(
-      valueListenable:
-          _MusicDetailInherit.of(context).pageManager.playButtonNotifier,
-      builder: (_, value, __) {
-        switch (value) {
+    return StreamBuilder<ButtonState>(
+      stream: _MusicDetailInherit.of(context).pageManager.playbackState,
+      builder: (context, snapshot) {
+        switch (snapshot.data) {
           case ButtonState.loading:
             return Container(
               margin: const EdgeInsets.all(8.0),
@@ -69,6 +68,12 @@ class _PlayButton extends StatelessWidget {
               icon: const Icon(Icons.pause),
               iconSize: 32.0,
               onPressed: _MusicDetailInherit.of(context).pageManager.pause,
+            );
+          case null:
+            return IconButton(
+              icon: const Icon(Icons.play_arrow),
+              iconSize: 32.0,
+              onPressed: _MusicDetailInherit.of(context).pageManager.play,
             );
         }
       },

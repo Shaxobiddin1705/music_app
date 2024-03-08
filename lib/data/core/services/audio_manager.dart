@@ -123,6 +123,24 @@ class PageManager {
     );
   }
 
+  Stream<ButtonState> get playbackState =>
+      _audioHandler.playbackState.asyncMap((event) {
+        final isPlaying = event.playing;
+        final processingState = event.processingState;
+        if (processingState == AudioProcessingState.loading ||
+            processingState == AudioProcessingState.buffering) {
+          return ButtonState.loading;
+        } else if (!isPlaying) {
+          return ButtonState.paused;
+        } else if (processingState != AudioProcessingState.completed) {
+          return ButtonState.playing;
+        } else {
+          _myAudioHandler.seek(Duration.zero);
+          _myAudioHandler.pause();
+        }
+        return ButtonState.paused;
+      });
+
   void _listenToPlaybackState() {
     _myAudioHandler.playbackState.listen((playbackState) {
       final isPlaying = playbackState.playing;
@@ -166,6 +184,7 @@ class PageManager {
   void _listenToTotalDuration() {
     _myAudioHandler.mediaItem.listen((mediaItem) {
       final oldState = progressNotifier.value;
+      print('total duration -> ${mediaItem?.duration}');
       progressNotifier.value = ProgressBarState(
         current: oldState.current,
         buffered: oldState.buffered,
@@ -244,14 +263,6 @@ class PageManager {
   void reorderPlaylist(int newIndex, int oldIndex) {
     _myAudioHandler.reorderPlaylist(newIndex, oldIndex);
   }
-
-  // Future<void> addSong(Track track, int index) async {
-  //   await _myAudioHandler.addItem(track.toMediaItem(), index);
-  // }
-  //
-  // void removeSong(Track track, int index) {
-  //   _myAudioHandler.removeItem(track.toMediaItem(), index);
-  // }
 
   void dispose() {
     _myAudioHandler.customAction('dispose');
