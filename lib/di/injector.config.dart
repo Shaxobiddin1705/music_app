@@ -116,10 +116,8 @@ extension GetItInjectableX on _i1.GetIt {
         useCaseModule.provideFetchAlbumUseCase(gh<_i19.AlbumRepository>()));
     gh.lazySingleton<_i20.GetSongsUseCase>(
         () => useCaseModule.provideGetSongsUseCase(gh<_i19.AlbumRepository>()));
-    gh.factory<_i17.LocalTracksBloc>(() => appBlocModule.provideLocalTracksBloc(
-          gh<_i20.GetSongsUseCase>(),
-          gh<_i11.OnAudioQuery>(),
-        ));
+    gh.factory<_i17.LocalTracksBloc>(
+        () => appBlocModule.provideLocalTracksBloc(gh<_i20.GetSongsUseCase>()));
     gh.lazySingleton<_i20.LocalTracksUseCase>(() =>
         useCaseModule.provideLocalTracksUseCase(gh<_i19.AlbumRepository>()));
     gh.lazySingleton<_i20.SearchAlbumUseCase>(() =>
@@ -128,8 +126,11 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i20.FetchAlbumUseCase>(),
           gh<_i20.DownloadFileUseCase>(),
         ));
-    gh.factory<_i17.SearchAlbumCubit>(() =>
-        appBlocModule.provideSearchAlbumCubit(gh<_i20.SearchAlbumUseCase>()));
+    gh.factory<_i17.SearchAlbumCubit>(
+        () => appBlocModule.provideSearchAlbumCubit(
+              gh<_i20.SearchAlbumUseCase>(),
+              gh<_i11.OnAudioQuery>(),
+            ));
     return this;
   }
 }

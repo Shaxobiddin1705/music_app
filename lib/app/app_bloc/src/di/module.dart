@@ -15,8 +15,9 @@ abstract class AppBlocModule {
 
   SearchAlbumCubit provideSearchAlbumCubit(
     SearchAlbumUseCase searchAlbumUseCase,
+    OnAudioQuery audioQuery,
   ) {
-    return SearchAlbumCubit(searchAlbumUseCase);
+    return SearchAlbumCubit(searchAlbumUseCase, audioQuery);
   }
 
   @singleton
@@ -26,8 +27,7 @@ abstract class AppBlocModule {
 
   LocalTracksBloc provideLocalTracksBloc(
     GetSongsUseCase songsUseCase,
-    OnAudioQuery audioQuery,
   ) {
-    return LocalTracksBloc(songsUseCase, audioQuery);
+    return LocalTracksBloc(songsUseCase);
   }
 }

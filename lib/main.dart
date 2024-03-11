@@ -5,7 +5,6 @@ import 'package:music_app/app/app_bloc/src/bloc_observer.dart';
 import 'package:music_app/data/database/db/app_db.dart';
 import 'package:music_app/di/injector.dart';
 import 'package:music_app/my_app.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

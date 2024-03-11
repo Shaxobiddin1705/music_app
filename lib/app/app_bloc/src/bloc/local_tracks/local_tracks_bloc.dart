@@ -12,13 +12,10 @@ part 'local_tracks_state.dart';
 part 'local_tracks_bloc.freezed.dart';
 
 class LocalTracksBloc extends Bloc<LocalTracksEvent, LocalTracksState> {
-  LocalTracksBloc(this._songsUseCase, this._audioQuery)
+  LocalTracksBloc(this._songsUseCase)
       : super(const LocalTracksState.initial()) {
     on<_GetTracks>(_getTracks);
   }
-
-  final OnAudioQuery _audioQuery;
-  bool _hasPermission = false;
 
   final GetSongsUseCase _songsUseCase;
 
@@ -27,20 +24,7 @@ class LocalTracksBloc extends Bloc<LocalTracksEvent, LocalTracksState> {
     Emitter<LocalTracksState> emit,
   ) async {
     emit(const _Loading());
-    final permission = await _checkAndRequestPermissions();
-    if (permission) {
-      final res = await _songsUseCase.getSongs();
-      emit(_Loaded(res));
-    } else {
-      emit(const _Error('Permission denied'));
-    }
-  }
-
-  Future<bool> _checkAndRequestPermissions({bool retry = false}) async {
-    _hasPermission = await _audioQuery.checkAndRequest(
-      retryRequest: retry,
-    );
-
-    return _hasPermission;
+    final res = await _songsUseCase.getSongs();
+    emit(_Loaded(res));
   }
 }
